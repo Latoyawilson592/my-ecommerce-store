@@ -6,7 +6,8 @@ const products = [
     { id: 4, name: "Premium Leather Desk Mat", price: 49.00, image: "https://images.unsplash.com/photo-1632292224971-0d45778bd364?w=500&q=80" }
 ];
 
-let cart = [];
+// Feature: Persistent Cart initialization via LocalStorage
+let cart = JSON.parse(localStorage.getItem('quickshop_cart')) || [];
 
 // DOM Elements
 const productGrid = document.getElementById('product-grid');
@@ -18,9 +19,23 @@ const cartItemsContainer = document.getElementById('cart-items');
 const cartCount = document.getElementById('cart-count');
 const cartTotal = document.getElementById('cart-total');
 
-// 1. Initialize & Display Products
-function displayProducts() {
-    productGrid.innerHTML = products.map(product => `
+// New Feature Elements
+const searchInput = document.getElementById('search-input');
+const checkoutModal = document.getElementById('checkout-modal');
+const closeModalBtn = document.getElementById('close-modal-btn');
+
+// 1. Display Products (Updated to support filtering)
+function displayProducts(productsToRender = products) {
+    if (productsToRender.length === 0) {
+        productGrid.innerHTML = `
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500 text-lg">No products match your search criteria.</p>
+            </div>
+        `;
+        return;
+    }
+
+    productGrid.innerHTML = productsToRender.map(product => `
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden product-card flex flex-col">
             <div class="h-48 overflow-hidden bg-gray-100">
                 <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
@@ -38,6 +53,15 @@ function displayProducts() {
     `).join('');
 }
 
+// Feature: Real-time search filter logic
+searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(searchTerm)
+    );
+    displayProducts(filtered);
+});
+
 // 2. Cart Management Functions
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
@@ -49,17 +73,22 @@ function addToCart(productId) {
         cart.push({ ...product, quantity: 1 });
     }
     
-    updateCartUI();
+    saveAndUpdateCart();
     openCartDrawer();
 }
 
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
+    saveAndUpdateCart();
+}
+
+// Helper to save data state locally
+function saveAndUpdateCart() {
+    localStorage.setItem('quickshop_cart', JSON.stringify(cart));
     updateCartUI();
 }
 
 function updateCartUI() {
-    // Update badge count
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     if (totalItems > 0) {
         cartCount.textContent = totalItems;
@@ -68,7 +97,6 @@ function updateCartUI() {
         cartCount.classList.add('hidden');
     }
 
-    // Render list items
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = `<p class="text-gray-500 text-center py-4">Your cart is empty.</p>`;
         cartTotal.textContent = "$0.00";
@@ -95,18 +123,33 @@ function updateCartUI() {
         </div>
     `).join('');
 
-    // Calculate total price
     const totalSum = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     cartTotal.textContent = `$${totalSum.toFixed(2)}`;
 }
 
-// 3. Drawer Toggle Actions
+// Feature: Checkout workflow & clearing states
+function handleCheckout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    closeCartDrawer();
+    checkoutModal.classList.remove('hidden');
+    
+    // Clear cart entirely upon successful simulated payment
+    cart = [];
+    saveAndUpdateCart();
+}
+
+// Drawer & Modal UI Toggle Actions
 function openCartDrawer() { cartDrawer.classList.remove('hidden'); }
 function closeCartDrawer() { cartDrawer.classList.add('hidden'); }
 
 cartBtn.addEventListener('click', openCartDrawer);
 closeCart.addEventListener('click', closeCartDrawer);
 cartOverlay.addEventListener('click', closeCartDrawer);
+closeModalBtn.addEventListener('click', () => checkoutModal.classList.add('hidden'));
 
-// Run on page load
+// Run functions on fresh page boot
 displayProducts();
+updateCartUI();
