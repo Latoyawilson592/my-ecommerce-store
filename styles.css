@@ -1,0 +1,14 @@
+/* Custom smooth transitions for drawer toggles */
+#cart-drawer {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Ensure images don't stretch unnaturally */
+.product-card img {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
