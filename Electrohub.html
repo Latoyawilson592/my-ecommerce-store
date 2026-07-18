@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroHub/ | Electronics Store</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            color: white;
+            padding: 20px 40px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+
+        .cart-btn {
+            background: white;
+            color: #0f172a;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+            gap: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-right: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            min-width: 280px;
+        }
+
+        .section {
+            padding: 40px;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #2563eb;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .product-card button,
+        .checkout-btn,
+        .clear-btn,
+        .remove-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            background: #dc2626;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+        }
+
+        .cart-section {
+            display: flex;
+            justify-content: center;
+        }
+
+        .cart-panel {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 10px;
+        }
+
+        .cart-summary {
+            margin-top: 16px;
+            text-align: right;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .address-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .address-form input,
+        .address-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+
+        .checkout-btn {
+            margin-top: 12px;
+            width: 100%;
+            background: #2563eb;
+        }
+
+        .promo {
+            background: #111827;
+            color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            margin: 0 40px 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ElectroHub</div>
+            <div class="nav-links">
+                <a href="#products">Products</a>
+                <a href="#cart">Cart</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="cart-btn" type="button">Cart <span id="cartCount">0</span></button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div>
+            <h1>Upgrade Your Tech Life</h1>
+            <p>Shop the latest iPhones, Samsung phones, chargers, and laptops with secure checkout and fast delivery.</p>
+            <a href="#products" class="btn btn-primary">Shop Now</a>
+            <a href="#cart" class="btn btn-secondary">View Cart</a>
+        </div>
+        <div class="hero-card">
+            <h3>Featured Deal</h3>
+            <p>Get premium tech with free delivery over $1,000.</p>
+            <p><strong>Fast shipping</strong> available nationwide.</p>
+        </div>
+    </section>
+
+    <section class="section" id="products">
+        <h2>Featured Products</h2>
+
+        <h3>iPhones</h3>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80" alt="iPhone">
+                <h3>iPhone 15 Pro</h3>
+                <p>Advanced camera and titanium design.</p>
+                <div class="price">$999</div>
+                <button class="add-btn" type="button" data-name="iPhone 15 Pro" data-price="999">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=800&q=80" alt="iPhone">
+                <h3>iPhone 14</h3>
+                <p>Powerful performance with great battery life.</p>
+                <div class="price">$799</div>
+                <button class="add-btn" type="button" data-name="iPhone 14" data-price="799">Add to Cart</button>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 24px;">Samsung Phones</h3>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80" alt="Samsung phone">
+                <h3>Galaxy S24 Ultra</h3>
+                <p>Ultra-bright display and AI-powered camera.</p>
+                <div class="price">$1,199</div>
+                <button class="add-btn" type="button" data-name="Galaxy S24 Ultra" data-price="1199">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?auto=format&fit=crop&w=800&q=80" alt="Samsung phone">
+                <h3>Galaxy Z Flip 5</h3>
+                <p>Compact foldable phone with premium features.</p>
+                <div class="price">$949</div>
+                <button class="add-btn" type="button" data-name="Galaxy Z Flip 5" data-price="949">Add to Cart</button>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 24px;">Chargers</h3>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80" alt="charger">
+                <h3>Fast Charger 65W</h3>
+                <p>Rapid charging for phones and laptops.</p>
+                <div class="price">$49</div>
+                <button class="add-btn" type="button" data-name="Fast Charger 65W" data-price="49">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="wireless charger">
+                <h3>Wireless Charger</h3>
+                <p>Convenient and clutter-free charging.</p>
+                <div class="price">$39</div>
+                <button class="add-btn" type="button" data-name="Wireless Charger" data-price="39">Add to Cart</button>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 24px;">Laptops</h3>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80" alt="laptop">
+                <h3>MacBook Air</h3>
+                <p>Lightweight laptop with excellent battery life.</p>
+                <div class="price">$1,299</div>
+                <button class="add-btn" type="button" data-name="MacBook Air" data-price="1299">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="laptop">
+                <h3>Dell XPS 13</h3>
+                <p>Premium laptop for work and entertainment.</p>
+                <div class="price">$1,149</div>
+                <button class="add-btn" type="button" data-name="Dell XPS 13" data-price="1149">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section cart-section" id="cart">
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h2>Shopping Cart</h2>
+                <button class="clear-btn" type="button" onclick="clearCart()">Clear Cart</button>
+            </div>
+            <div id="cartItems">Your cart is empty.</div>
+            <div class="cart-summary">
+                <div>Subtotal: $<span id="subtotal">0</span></div>
+                <div>Shipping: $<span id="shippingCost">0</span></div>
+                <div><strong>Total: $<span id="cartTotal">0</span></strong></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Shipping & Billing Addresses</h3>
+            <div class="address-form">
+                <input id="shippingName" placeholder="Shipping Name">
+                <input id="shippingAddress" placeholder="Shipping Address">
+                <input id="shippingCity" placeholder="Shipping City">
+                <input id="shippingZip" placeholder="Postal Code">
+                <input id="shippingCountry" placeholder="Country">
+            </div>
+
+            <div style="margin: 12px 0;">
+                <label><input type="checkbox" id="sameAsShipping" checked> Billing address same as shipping</label>
+            </div>
+
+            <div class="address-form" id="billingForm">
+                <input id="billingName" placeholder="Billing Name">
+                <input id="billingAddress" placeholder="Billing Address">
+                <input id="billingCity" placeholder="Billing City">
+                <input id="billingZip" placeholder="Billing Postal Code">
+                <input id="billingCountry" placeholder="Billing Country">
+            </div>
+
+            <button class="checkout-btn" type="button" onclick="checkout()">Place Order</button>
+        </div>
+    </section>
+
+    <section class="promo" id="deals">
+        <h2>Fast Delivery & Easy Returns</h2>
+        <p>Enjoy secure payment, delivery tracking, and hassle-free returns on every purchase.</p>
+    </section>
+
+    <footer id="contact">
+        <p>ElectroHub © 2026 | Trusted electronics shopping experience</p>
+    </footer>
+
+    <script>
+        const cart = [];
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const subtotalEl = document.getElementById('subtotal');
+        const shippingCostEl = document.getElementById('shippingCost');
+        const cartTotal = document.getElementById('cartTotal');
+        const sameAsShipping = document.getElementById('sameAsShipping');
+        const billingForm = document.getElementById('billingForm');
+
+        document.querySelectorAll('.add-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                cart.push({
+                    name: button.dataset.name,
+                    price: Number(button.dataset.price)
+                });
+                renderCart();
+            });
+        });
+
+        sameAsShipping.addEventListener('change', () => {
+            billingForm.style.display = sameAsShipping.checked ? 'none' : 'grid';
+        });
+
+        function renderCart() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = 'Your cart is empty.';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span>$${item.price}</span>
+                            <button class="remove-btn" type="button" onclick="removeItem(${index})">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            cartCount.textContent = cart.length;
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const shippingCost = subtotal > 1000 ? 0 : 25;
+            subtotalEl.textContent = subtotal.toLocaleString();
+            shippingCostEl.textContent = shippingCost.toLocaleString();
+            cartTotal.textContent = (subtotal + shippingCost).toLocaleString();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function clearCart() {
+            cart.length = 0;
+            renderCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+
+            const shippingName = document.getElementById('shippingName').value.trim();
+            const shippingAddress = document.getElementById('shippingAddress').value.trim();
+            const shippingCity = document.getElementById('shippingCity').value.trim();
+            const shippingZip = document.getElementById('shippingZip').value.trim();
+            const shippingCountry = document.getElementById('shippingCountry').value.trim();
+
+            if (!shippingName || !shippingAddress || !shippingCity || !shippingZip || !shippingCountry) {
+                alert('Please complete your shipping address.');
+                return;
+            }
+
+            if (!sameAsShipping.checked) {
+                const billingName = document.getElementById('billingName').value.trim();
+                const billingAddress = document.getElementById('billingAddress').value.trim();
+                const billingCity = document.getElementById('billingCity').value.trim();
+                const billingZip = document.getElementById('billingZip').value.trim();
+                const billingCountry = document.getElementById('billingCountry').value.trim();
+
+                if (!billingName || !billingAddress || !billingCity || !billingZip || !billingCountry) {
+                    alert('Please complete your billing address.');
+                    return;
+                }
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const shippingCost = subtotal > 1000 ? 0 : 25;
+            const total = subtotal + shippingCost;
+
+            alert(`Order placed successfully!\nShipping to: ${shippingName}\nSubtotal: $${subtotal}\nShipping: $${shippingCost}\nTotal: $${total}`);
+            clearCart();
+        }
+
+        renderCart();
+        billingForm.style.display = sameAsShipping.checked ? 'none' : 'grid';
+    </script>
+</body>
+</html>
+
+
